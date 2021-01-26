@@ -16,7 +16,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('students.index');
+        $students = Student::all();
+        return view('students.index', compact('students'));
     }
 
     /**
@@ -37,7 +38,14 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        Student::create($request->all());
+        // Student::create($request->all());
+        Student::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'cell' => $request->cell,
+        ]);
+        return redirect()->route('students.index');
     }
 
     /**
@@ -80,8 +88,9 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function delete(Student $student)
     {
-        //
+        $student->delete();
+        return redirect()->route('students.index');
     }
 }
